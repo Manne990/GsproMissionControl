@@ -15,3 +15,5 @@ cp -a "$PUBLISH"/. "$OUTDIR"/
 
 # Skapa zip (tystare)
 (cd "$HOME/Downloads" && zip -rq "$(basename "$ZIPFILE")" "$(basename "$OUTDIR")")
+
+open ~/Downloads
