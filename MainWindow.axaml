@@ -8,6 +8,9 @@
         ShowInTaskbar="False"
         ShowActivated="False"
 >
+  <Window.Resources>
+    <SolidColorBrush x:Key="AccentBrush" Color="#FFB74D"/>
+  </Window.Resources>
 
   <Window.Styles>
     <Style Selector="Button, RepeatButton">
@@ -70,7 +73,7 @@
                         <!-- TITLE -->
                         <Label Grid.Row="0"
                                 Content="GSPro - Mission Control"
-                                Foreground="White"
+                                Foreground="{StaticResource AccentBrush}"
                                 FontFamily="avares://GsproMissionControl/Assets/Orbitron.ttf#Orbitron"
                                 FontSize="22"
                                 HorizontalAlignment="Center"/>
