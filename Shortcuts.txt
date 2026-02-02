@@ -1,0 +1,21 @@
+GSPro Shortcuts
+
+FLYOVER:          o
+AIM:              J
+HEAT MAP:         Y
+HIDE OBJECTS:     B
+HIDE UI:          H
+
+CAMERA UP:        Arrow Up + Delay 100 ms (nedtryckt skickar samma kommando om och om igen med 100 ms delay mellan dem)
+CAMERA DOWN:      Arrow Down + Delay 100 ms (nedtryckt skickar samma kommando om och om igen med 100 ms delay mellan dem)
+CAMERA LEFT:      Arrow Up + Delay 100 ms (nedtryckt skickar samma kommando om och om igen med 100 ms delay mellan dem)
+CAMERA RIGHT:     Arrow Up + Delay 100 ms (nedtryckt skickar samma kommando om och om igen med 100 ms delay mellan dem)
+
+TEE BACK:         c
+TEE FORWARD:      V
+
+CLUB UP:          I
+CLUB DOWN:        K
+PUTTER:           U
+
+SCORE CARD:       T
