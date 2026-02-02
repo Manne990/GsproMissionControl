@@ -47,12 +47,15 @@
   </Window.Styles>
 
 <Viewbox Stretch="Uniform">
-        <Grid ColumnDefinitions="220,*,220"
-                RowDefinitions="*"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Black">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black">
+                <!-- Main content -->
+                <Grid Grid.Row="0" Grid.Column="0"
+                        ColumnDefinitions="220,*,220"
+                        RowDefinitions="*"
+                        Margin="24"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="Black">
 
                 <!-- LEFT COLUMN -->
                 <StackPanel Grid.Column="0" Spacing="20" VerticalAlignment="Center">
@@ -151,6 +154,24 @@
                         <Button Content="PUTTER" Height="54" Width="180" Click="Putter_OnClick"/>
                 </StackPanel>
 
+                </Grid>
+
+                <!-- Futuristic corner-bracket frame (accent color, HUD-style) -->
+                <Grid Grid.Row="0" Grid.Column="0" Margin="24" IsHitTestVisible="False"
+                        RowDefinitions="28,*,28" ColumnDefinitions="28,*,28">
+                        <Path Grid.Row="0" Grid.Column="0" Width="28" Height="28" Stretch="None"
+                                Data="M 0,0 L 0,28 M 0,0 L 28,0"
+                                Stroke="{StaticResource AccentBrush}" StrokeThickness="2" StrokeLineCap="Square"/>
+                        <Path Grid.Row="0" Grid.Column="2" Width="28" Height="28" HorizontalAlignment="Right" Stretch="None"
+                                Data="M 28,0 L 28,28 M 28,0 L 0,0"
+                                Stroke="{StaticResource AccentBrush}" StrokeThickness="2" StrokeLineCap="Square"/>
+                        <Path Grid.Row="2" Grid.Column="0" Width="28" Height="28" VerticalAlignment="Bottom" Stretch="None"
+                                Data="M 0,28 L 0,0 M 0,28 L 28,28"
+                                Stroke="{StaticResource AccentBrush}" StrokeThickness="2" StrokeLineCap="Square"/>
+                        <Path Grid.Row="2" Grid.Column="2" Width="28" Height="28" HorizontalAlignment="Right" VerticalAlignment="Bottom" Stretch="None"
+                                Data="M 28,28 L 28,0 M 28,28 L 0,28"
+                                Stroke="{StaticResource AccentBrush}" StrokeThickness="2" StrokeLineCap="Square"/>
+                </Grid>
         </Grid>
 </Viewbox>
 </Window>
