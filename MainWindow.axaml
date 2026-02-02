@@ -71,6 +71,8 @@
                         <Label Grid.Row="0"
                                 Content="GSPro - Mission Control"
                                 Foreground="White"
+                                FontFamily="avares://GsproMissionControl/Assets/Orbitron.ttf#Orbitron"
+                                FontSize="22"
                                 HorizontalAlignment="Center"/>
 
                         <!-- D-PAD -->

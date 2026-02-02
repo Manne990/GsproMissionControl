@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -13,6 +13,7 @@
   <ItemGroup>
     <!-- Ikon som Avalonia-resurs (för Window Icon="avares://...") -->
     <AvaloniaResource Include="Assets\icon.ico" />
+    <AvaloniaResource Include="Assets\Orbitron.ttf" />
 
     <PackageReference Include="Avalonia" Version="11.3.11" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
