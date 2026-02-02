@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Avalonia;
 
@@ -27,6 +27,7 @@ class Program
 
             // Om den råkar ha konsol: skriv ändå
             Console.Error.WriteLine(ex);
+            Environment.Exit(1);
         }
     }
 
