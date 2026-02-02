@@ -14,9 +14,8 @@ public partial class MainWindow : Window
 
         Opened += (_, _) =>
         {
-            WindowsNoActivate.MakeNoActivate(this);
+            WindowsNoActivate.MakeNoActivateAsync(this, toolWindow: true);
         };
-
     }
 
     private void Flyover_OnClick(object? sender, RoutedEventArgs e) => _keyInjector.SendKeyChar('o');

@@ -2,8 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="GsproMissionControl.MainWindow"
         Title="GSPro - Mission Control"
+        Icon="avares://GsproMissionControl/Assets/icon.ico">
         Width="1200" Height="700"
-        Background="Black">
+        Background="Black"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+>
 
   <Window.Styles>
     <!-- 2) Centrera alltid ikon/text i knappar (horisontellt + vertikalt) -->
