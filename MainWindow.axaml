@@ -30,112 +30,114 @@
     </Style>
   </Window.Styles>
 
-  <!-- Grundlayout: 3 kolumner -->
-  <Grid ColumnDefinitions="220,*,220"
-        RowDefinitions="*"
-        Margin="20"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Background="Black">
+<Viewbox Stretch="Uniform">
+        <!-- Grundlayout: 3 kolumner -->
+        <Grid ColumnDefinitions="220,*,220"
+                RowDefinitions="*"
+                Margin="20"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Black">
 
-    <!-- VÄNSTERKOLUMN -->
-    <!-- 3) Samma bredd som högerkolumnens knappar: 180 -->
-    <StackPanel Grid.Column="0" Spacing="14" VerticalAlignment="Center">
-      <Button Content="FLYOVER" Click="Flyover_OnClick" Height="54" Width="180"/>
-      <Button Content="AIM" Click="Aim_OnClick" Height="54" Width="180"/>
-      <Button Content="HEAT MAP" Click="HeatMap_OnClick" Height="54" Width="180"/>
-      <Button Content="HIDE OBJ" Click="HideObjects_OnClick" Height="54" Width="180"/>
-      <Button Content="HIDE UI" Click="HideUi_OnClick" Height="54" Width="180"/>
-    </StackPanel>
+                <!-- VÄNSTERKOLUMN -->
+                <!-- 3) Samma bredd som högerkolumnens knappar: 180 -->
+                <StackPanel Grid.Column="0" Spacing="14" VerticalAlignment="Center">
+                        <Button Content="FLYOVER" Click="Flyover_OnClick" Height="54" Width="180"/>
+                        <Button Content="AIM" Click="Aim_OnClick" Height="54" Width="180"/>
+                        <Button Content="HEAT MAP" Click="HeatMap_OnClick" Height="54" Width="180"/>
+                        <Button Content="HIDE OBJ" Click="HideObjects_OnClick" Height="54" Width="180"/>
+                        <Button Content="HIDE UI" Click="HideUi_OnClick" Height="54" Width="180"/>
+                </StackPanel>
 
-    <!-- MITTENKOLUMN -->
-    <Grid Grid.Column="1"
-          RowDefinitions="Auto,*,Auto,Auto"
-          ColumnDefinitions="*"
-          Margin="20,0"
-          Background="Black">
+                <!-- MITTENKOLUMN -->
+                <Grid Grid.Column="1"
+                        RowDefinitions="Auto,*,Auto,Auto"
+                        ColumnDefinitions="*"
+                        Margin="20,0"
+                        Background="Black">
 
-      <!-- SHORTCUTS -->
-      <Label Grid.Row="0"
-             Content="GSPro - Mission Control"
-             Foreground="White"
-             HorizontalAlignment="Center"/>
+                        <!-- SHORTCUTS -->
+                        <Label Grid.Row="0"
+                                Content="GSPro - Mission Control"
+                                Foreground="White"
+                                HorizontalAlignment="Center"/>
 
-      <!-- D-PAD -->
-      <Grid Grid.Row="1"
-            RowDefinitions="Auto,Auto,Auto"
-            ColumnDefinitions="Auto,Auto,Auto"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Margin="0,20">
+                        <!-- D-PAD -->
+                        <Grid Grid.Row="1"
+                                RowDefinitions="Auto,Auto,Auto"
+                                ColumnDefinitions="Auto,Auto,Auto"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="0,20">
 
-        <!-- Upp -->
-        <RepeatButton Grid.Row="0" Grid.Column="1"
-                      Classes="dpad"
-                      Content="↑"
-                      Interval="100"
-                      Click="CameraUp_OnClick"/>
+                                <!-- Upp -->
+                                <RepeatButton Grid.Row="0" Grid.Column="1"
+                                                Classes="dpad"
+                                                Content="↑"
+                                                Interval="100"
+                                                Click="CameraUp_OnClick"/>
 
-        <!-- Vänster -->
-        <RepeatButton Grid.Row="1" Grid.Column="0"
-                      Classes="dpad"
-                      Content="←"
-                      Interval="100"
-                      Click="CameraLeft_OnClick"/>
+                                <!-- Vänster -->
+                                <RepeatButton Grid.Row="1" Grid.Column="0"
+                                                Classes="dpad"
+                                                Content="←"
+                                                Interval="100"
+                                                Click="CameraLeft_OnClick"/>
 
-        <!-- Höger -->
-        <RepeatButton Grid.Row="1" Grid.Column="2"
-                      Classes="dpad"
-                      Content="→"
-                      Interval="100"
-                      Click="CameraRight_OnClick"/>
+                                <!-- Höger -->
+                                <RepeatButton Grid.Row="1" Grid.Column="2"
+                                                Classes="dpad"
+                                                Content="→"
+                                                Interval="100"
+                                                Click="CameraRight_OnClick"/>
 
-        <!-- Ned -->
-        <RepeatButton Grid.Row="2" Grid.Column="1"
-                      Classes="dpad"
-                      Content="↓"
-                      Interval="100"
-                      Click="CameraDown_OnClick"/>
-      </Grid>
+                                <!-- Ned -->
+                                <RepeatButton Grid.Row="2" Grid.Column="1"
+                                                Classes="dpad"
+                                                Content="↓"
+                                                Interval="100"
+                                                Click="CameraDown_OnClick"/>
+                        </Grid>
 
-      <!-- TEE -->
-      <!-- 5) Använd en fast bredd och låt Score Card matcha den,
-             så kanterna linjerar exakt med tee-knapparna -->
-      <Grid Grid.Row="2"
-            ColumnDefinitions="Auto,Auto"
-            HorizontalAlignment="Center"
-            Margin="0,10"
-            Width="360">
+                        <!-- TEE -->
+                        <!-- 5) Använd en fast bredd och låt Score Card matcha den,
+                                så kanterna linjerar exakt med tee-knapparna -->
+                        <Grid Grid.Row="2"
+                                ColumnDefinitions="Auto,Auto"
+                                HorizontalAlignment="Center"
+                                Margin="0,10"
+                                Width="360">
 
-        <Button Grid.Column="0"
-                Content="←  TEE"
-                Width="170" Height="54"
-                Margin="0,0,20,0"
-                Click="TeeBack_OnClick"/>
+                                <Button Grid.Column="0"
+                                        Content="←  TEE"
+                                        Width="170" Height="54"
+                                        Margin="0,0,20,0"
+                                        Click="TeeBack_OnClick"/>
 
-        <Button Grid.Column="1"
-                Content="TEE  →"
-                Width="170" Height="54"
-                Click="TeeForward_OnClick"/>
-      </Grid>
+                                <Button Grid.Column="1"
+                                        Content="TEE  →"
+                                        Width="170" Height="54"
+                                        Click="TeeForward_OnClick"/>
+                        </Grid>
 
-      <!-- SCORE CARD -->
-      <!-- 5) Smalare och alignad med tee-knapparnas vänster/höger-kant -->
-      <Button Grid.Row="3"
-              Content="SCORE CARD"
-              Height="60"
-              Width="360"
-              HorizontalAlignment="Center"
-              Margin="0,10,0,0"
-              Click="ScoreCard_OnClick"/>
-    </Grid>
+                        <!-- SCORE CARD -->
+                        <!-- 5) Smalare och alignad med tee-knapparnas vänster/höger-kant -->
+                        <Button Grid.Row="3"
+                                Content="SCORE CARD"
+                                Height="60"
+                                Width="360"
+                                HorizontalAlignment="Center"
+                                Margin="0,10,0,0"
+                                Click="ScoreCard_OnClick"/>
+                </Grid>
 
-    <!-- HÖGERKOLUMN -->
-    <StackPanel Grid.Column="2" Spacing="14" VerticalAlignment="Center" HorizontalAlignment="Right">
-      <Button Content="CLUB  ↑" Height="54" Width="180" Click="ClubUp_OnClick"/>
-      <Button Content="CLUB  ↓" Height="54" Width="180" Click="ClubDown_OnClick"/>
-      <Button Content="PUTTER" Height="54" Width="180" Click="Putter_OnClick"/>
-    </StackPanel>
+                <!-- HÖGERKOLUMN -->
+                <StackPanel Grid.Column="2" Spacing="14" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <Button Content="CLUB  ↑" Height="54" Width="180" Click="ClubUp_OnClick"/>
+                        <Button Content="CLUB  ↓" Height="54" Width="180" Click="ClubDown_OnClick"/>
+                        <Button Content="PUTTER" Height="54" Width="180" Click="Putter_OnClick"/>
+                </StackPanel>
 
-  </Grid>
+        </Grid>
+</Viewbox>
 </Window>
