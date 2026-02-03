@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Avalonia.Controls;
 using Avalonia.Threading;
 
-namespace GsproMissionControl;
+namespace GsproMissionControl.Screen;
 
 public static class WindowsNoActivate
 {
@@ -12,8 +12,8 @@ public static class WindowsNoActivate
 
     private const int WS_EX_NOACTIVATE = 0x08000000;
 
-    // Valfritt men rekommenderat för “overlay/mission control”:
-    // tar bort från Alt-Tab och minskar chanser att bli “aktivt” fönster.
+    // Valfritt men rekommenderat för "overlay/mission control":
+    // tar bort från Alt-Tab och minskar chanser att bli "aktivt" fönster.
     private const int WS_EX_TOOLWINDOW = 0x00000080;
 
     // SetWindowPos flags
@@ -52,7 +52,7 @@ public static class WindowsNoActivate
 
         SetWindowLongPtr(handle, GWL_EXSTYLE, new IntPtr(newStyle));
 
-        // Force refresh/apply + säkerställ “no activate” även vid style-change
+        // Force refresh/apply + säkerställ "no activate" även vid style-change
         SetWindowPos(handle,
             IntPtr.Zero,
             0, 0, 0, 0,
