@@ -111,12 +111,12 @@ Use at your own discretion.
 
 ## 📄 License
 
-MIT License (or choose your preferred license)
+GNU General Public License v3.0
 
 ---
 
 ## ⛳ Why this exists
 
-Built by a golf nerd for golf nerds.
+Built by a golfer for golfers.
 
 If it improves your simulator experience, that’s a win.
