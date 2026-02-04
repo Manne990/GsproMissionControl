@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 
@@ -12,8 +13,7 @@ public static class WindowsNoActivate
 
     private const int WS_EX_NOACTIVATE = 0x08000000;
 
-    // Valfritt men rekommenderat för "overlay/mission control":
-    // tar bort från Alt-Tab och minskar chanser att bli "aktivt" fönster.
+    // Tar bort från Alt-Tab och minskar chanser att bli "aktivt" fönster.
     private const int WS_EX_TOOLWINDOW = 0x00000080;
 
     // SetWindowPos flags
@@ -23,19 +23,85 @@ public static class WindowsNoActivate
     private const uint SWP_NOACTIVATE = 0x0010;
     private const uint SWP_FRAMECHANGED = 0x0020;
 
+    // WM_MOUSEACTIVATE: return MA_NOACTIVATE so window is never activated by click or hover (active window tracking).
+    private const uint WM_MOUSEACTIVATE = 0x0021;
+    private const int MA_NOACTIVATE = 3;
+
+    private static readonly Win32Properties.CustomWndProcHookCallback WndProcHook = WndProcHookCallback;
+
     /// <summary>
-    /// Call from Opened/AttachedToVisualTree. Posts one tick to ensure HWND exists and styles apply reliably.
+    /// Call from Opened. Applies no-activate styles, hooks WM_MOUSEACTIVATE, and re-applies styles after short delays to win timing races.
     /// </summary>
     public static void MakeNoActivateAsync(Window window, bool toolWindow = true)
     {
         if (!OperatingSystem.IsWindows())
             return;
 
-        // Post to next UI tick -> stabilare timing än direkt i Opened.
-        Dispatcher.UIThread.Post(() => MakeNoActivate(window, toolWindow), DispatcherPriority.Loaded);
+        // Apply immediately if handle exists (minimize chance of a single frame with wrong style).
+        ApplyStyles(window, toolWindow);
+
+        Dispatcher.UIThread.Post(() => ApplyAndHook(window, toolWindow), DispatcherPriority.Loaded);
+    }
+
+    private static void ApplyAndHook(Window window, bool toolWindow)
+    {
+        if (!OperatingSystem.IsWindows())
+            return;
+
+        ApplyStyles(window, toolWindow);
+
+        // Block activation from mouse click/hover (WS_EX_NOACTIVATE is bypassed by "active window tracking").
+        try
+        {
+            Win32Properties.AddWndProcHookCallback(window, WndProcHook);
+            window.Closed += OnWindowClosed;
+        }
+        catch
+        {
+            // Win32Properties may not be available on non-Win32 platform.
+        }
+
+        // Re-apply styles after delays; HWND can appear late or get overwritten by the framework.
+        ScheduleReapply(window, toolWindow, 100);
+        ScheduleReapply(window, toolWindow, 400);
+    }
+
+    private static void OnWindowClosed(object? sender, EventArgs e)
+    {
+        if (sender is TopLevel topLevel)
+        {
+            topLevel.Closed -= OnWindowClosed;
+            try
+            {
+                Win32Properties.RemoveWndProcHookCallback(topLevel, WndProcHook);
+            }
+            catch { /* best effort */ }
+        }
+    }
+
+    private static void ScheduleReapply(Window window, bool toolWindow, int delayMs)
+    {
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(delayMs).ConfigureAwait(false);
+            Dispatcher.UIThread.Post(() => ApplyStyles(window, toolWindow), DispatcherPriority.Loaded);
+        });
+    }
+
+    private static IntPtr WndProcHookCallback(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == WM_MOUSEACTIVATE)
+        {
+            handled = true;
+            return (IntPtr)MA_NOACTIVATE;
+        }
+        return IntPtr.Zero;
     }
 
     public static void MakeNoActivate(Window window, bool toolWindow = true)
+        => ApplyStyles(window, toolWindow);
+
+    private static void ApplyStyles(Window window, bool toolWindow)
     {
         if (!OperatingSystem.IsWindows())
             return;
@@ -52,14 +118,12 @@ public static class WindowsNoActivate
 
         SetWindowLongPtr(handle, GWL_EXSTYLE, new IntPtr(newStyle));
 
-        // Force refresh/apply + säkerställ "no activate" även vid style-change
         SetWindowPos(handle,
             IntPtr.Zero,
             0, 0, 0, 0,
             SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
     }
 
-    // 64-bit safe Get/SetWindowLongPtr
     private static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
         => IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : new IntPtr(GetWindowLong32(hWnd, nIndex));
 
