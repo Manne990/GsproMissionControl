@@ -51,23 +51,23 @@ No special GSPro configuration required.
 
 ## ⌨️ Default Controls
 
-| Action | Key Sent |
-|--------|--------|
-FLYOVER:          o
-AIM:              J
-HEAT MAP:         Y
-HIDE OBJECTS:     B
-HIDE UI:          H
-CAMERA UP:        Arrow Up + Delay 100 ms
-CAMERA DOWN:      Arrow Down + Delay 100 ms
-CAMERA LEFT:      Arrow Left + Delay 100 ms
-CAMERA RIGHT:     Arrow Right + Delay 100 ms
-TEE BACK:         c
-TEE FORWARD:      V
-CLUB UP:          I
-CLUB DOWN:        K
-PUTTER:           U
-SCORE CARD:       T
+| Action        | Key Sent                     |
+|--------------|------------------------------|
+| Flyover      | `O`                          |
+| Aim          | `J`                          |
+| Heat Map     | `Y`                          |
+| Hide Objects | `B`                          |
+| Hide UI      | `H`                          |
+| Camera Up    | `Arrow Up` (+100 ms delay)   |
+| Camera Down  | `Arrow Down` (+100 ms delay) |
+| Camera Left  | `Arrow Left` (+100 ms delay) |
+| Camera Right | `Arrow Right` (+100 ms delay)|
+| Tee Back     | `C`                          |
+| Tee Forward  | `V`                          |
+| Club Up      | `I`                          |
+| Club Down    | `K`                          |
+| Putter       | `U`                          |
+| Score Card   | `T`                          |
 
 You can modify key mappings in the source if needed.
 
