@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -27,7 +28,16 @@ public static class WindowsNoActivate
     private const uint WM_MOUSEACTIVATE = 0x0021;
     private const int MA_NOACTIVATE = 3;
 
+    // WM_SIZE: when window is maximized/restored/minimized, styles can be lost or window can be activated — re-apply.
+    private const uint WM_SIZE = 0x0005;
+    private const int SIZE_RESTORED = 0;
+    private const int SIZE_MINIMIZED = 1;
+    private const int SIZE_MAXIMIZED = 2;
+
     private static readonly Win32Properties.CustomWndProcHookCallback WndProcHook = WndProcHookCallback;
+
+    /// <summary>Maps HWND to (Window, toolWindow) so we can re-apply styles from WndProc (e.g. on maximize).</summary>
+    private static readonly Dictionary<IntPtr, (Window Window, bool ToolWindow)> _windowByHandle = new();
 
     /// <summary>
     /// Call from Opened. Applies no-activate styles, hooks WM_MOUSEACTIVATE, and re-applies styles after short delays to win timing races.
@@ -51,6 +61,10 @@ public static class WindowsNoActivate
         ApplyStyles(window, toolWindow);
 
         // Block activation from mouse click/hover (WS_EX_NOACTIVATE is bypassed by "active window tracking").
+        var handle = window.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+        if (handle != IntPtr.Zero)
+            _windowByHandle[handle] = (window, toolWindow);
+
         try
         {
             Win32Properties.AddWndProcHookCallback(window, WndProcHook);
@@ -58,6 +72,8 @@ public static class WindowsNoActivate
         }
         catch
         {
+            if (handle != IntPtr.Zero)
+                _windowByHandle.Remove(handle);
             // Win32Properties may not be available on non-Win32 platform.
         }
 
@@ -68,15 +84,17 @@ public static class WindowsNoActivate
 
     private static void OnWindowClosed(object? sender, EventArgs e)
     {
-        if (sender is TopLevel topLevel)
+        if (sender is not Window window)
+            return;
+        window.Closed -= OnWindowClosed;
+        var handle = window.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+        if (handle != IntPtr.Zero)
+            _windowByHandle.Remove(handle);
+        try
         {
-            topLevel.Closed -= OnWindowClosed;
-            try
-            {
-                Win32Properties.RemoveWndProcHookCallback(topLevel, WndProcHook);
-            }
-            catch { /* best effort */ }
+            Win32Properties.RemoveWndProcHookCallback(window, WndProcHook);
         }
+        catch { /* best effort */ }
     }
 
     private static void ScheduleReapply(Window window, bool toolWindow, int delayMs)
@@ -88,12 +106,43 @@ public static class WindowsNoActivate
         });
     }
 
+    private static void ReapplyStylesForSizeChange(IntPtr hWnd)
+    {
+        if (_windowByHandle.TryGetValue(hWnd, out var pair))
+        {
+            Dispatcher.UIThread.Post(() => ApplyStyles(pair.Window, pair.ToolWindow), DispatcherPriority.Send);
+            ScheduleReapply(pair.Window, pair.ToolWindow, 50);
+        }
+        else
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                foreach (var (w, tw) in _windowByHandle.Values)
+                {
+                    if (w.TryGetPlatformHandle()?.Handle == hWnd)
+                    {
+                        ApplyStyles(w, tw);
+                        ScheduleReapply(w, tw, 50);
+                        break;
+                    }
+                }
+            }, DispatcherPriority.Send);
+        }
+    }
+
     private static IntPtr WndProcHookCallback(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
         if (msg == WM_MOUSEACTIVATE)
         {
             handled = true;
             return (IntPtr)MA_NOACTIVATE;
+        }
+        // Maximize / restore from maximized / restore from minimized can activate the window or strip our styles — re-apply.
+        if (msg == WM_SIZE)
+        {
+            var sizeType = wParam.ToInt32();
+            if (sizeType == SIZE_MAXIMIZED || sizeType == SIZE_RESTORED)
+                ReapplyStylesForSizeChange(hWnd);
         }
         return IntPtr.Zero;
     }
