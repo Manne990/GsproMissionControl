@@ -53,11 +53,21 @@ No special GSPro configuration required.
 
 | Action | Key Sent |
 |--------|--------|
-| Flyover | O |
-| Toggle UI | (GSPro default) |
-| Heat Map | (GSPro default) |
-| Mulligan | (GSPro default) |
-| Gimme | (GSPro default) |
+FLYOVER:          o
+AIM:              J
+HEAT MAP:         Y
+HIDE OBJECTS:     B
+HIDE UI:          H
+CAMERA UP:        Arrow Up + Delay 100 ms
+CAMERA DOWN:      Arrow Down + Delay 100 ms
+CAMERA LEFT:      Arrow Left + Delay 100 ms
+CAMERA RIGHT:     Arrow Right + Delay 100 ms
+TEE BACK:         c
+TEE FORWARD:      V
+CLUB UP:          I
+CLUB DOWN:        K
+PUTTER:           U
+SCORE CARD:       T
 
 You can modify key mappings in the source if needed.
 
